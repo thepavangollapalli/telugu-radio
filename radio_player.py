@@ -75,26 +75,38 @@ def play_stream(station_name, stream_url):
         
 def handle_intent(request):
     intent_name = request["intent"]["name"]
-    if(intent_name == "AMAZON.StopIntent" or intent_name == "AMAZON.PauseIntent"):
+    if(intent_name in [
+                        "AMAZON.StopIntent",
+                        "AMAZON.PauseIntent",
+                        "AMAZON.CancelIntent",
+                        "AMAZON.PreviousIntent",
+                        "AMAZON.ShuffleOffIntent",
+                        "AMAZON.LoopOffIntent"
+                    ]):
         return {
                 "version": "1.0",
                 "sessionAttributes": {},
                 "response": {
-                    "outputSpeech": {
-                        "type": "PlainText",
-                        "text": "",
-                        "playBehavior": "REPLACE_ALL"
-                    },
                     "directives": [
                         {
                             "type": "AudioPlayer.Stop"
                         }
                     ],
-                    "shouldEndSession": False
+                    "shouldEndSession": True
                 }
             }
-    elif(intent_name == "AMAZON.ResumeIntent"):
-        return handle_no_station_number()
+    elif(intent_name in [
+                            "AMAZON.ResumeIntent",
+                            "AMAZON.StartOverIntent",
+                            "AMAZON.RepeatIntent",
+                            "AMAZON.ShuffleOnIntent",
+                            "AMAZON.LoopOnIntent",
+                            "AMAZON.NextIntent"
+                        ]):
+        station_index = "#" + str(randint(1, 6))
+        station_name = station_names[station_index]
+        station_url = station_urls[station_name]
+        return play_stream(station_name, station_url)
     elif(intent_name == "PlayRadio"):
         intent = request["intent"]
         station_index = intent["slots"]["stationNumber"]["value"].lower()
