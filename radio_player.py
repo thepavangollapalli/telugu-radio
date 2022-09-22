@@ -79,7 +79,6 @@ def handle_intent(request):
                         "AMAZON.StopIntent",
                         "AMAZON.PauseIntent",
                         "AMAZON.CancelIntent",
-                        "AMAZON.PreviousIntent",
                         "AMAZON.ShuffleOffIntent",
                         "AMAZON.LoopOffIntent"
                     ]):
@@ -101,6 +100,7 @@ def handle_intent(request):
                             "AMAZON.RepeatIntent",
                             "AMAZON.ShuffleOnIntent",
                             "AMAZON.LoopOnIntent",
+                            "AMAZON.PreviousIntent",
                             "AMAZON.NextIntent"
                         ]):
         station_index = "#" + str(randint(1, 6))
